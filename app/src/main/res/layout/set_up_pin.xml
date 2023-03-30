@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:paddingHorizontal="32dp">
+
+        <!--       main block icons and warning-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/spin_palceholder_ly"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <RelativeLayout android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_launcher_foreground"
+                    android:layout_gravity="center_horizontal"/>
+
+
+
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/orange_circle"
+                    android:alpha="0.3"
+                    android:layout_gravity="center_horizontal"/>
+
+
+            </RelativeLayout>
+
+
+
+
+        </LinearLayout>
+        <!--warning text and basic warning-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spin_palceholder_ly"
+            android:layout_above="@+id/spin_exit_button_ly"
+            android:gravity="center"
+            android:paddingTop="40dp"
+            android:orientation="vertical">
+
+            <LinearLayout android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/noticePrimaryColor"
+                    android:text="Change"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_horizontal"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Pin!"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_horizontal"/>
+
+
+            </LinearLayout>
+
+
+            <!--            warning layout-->
+
+
+
+
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/pattern_lock" />
+
+            </LinearLayout>
+
+
+
+
+
+
+            <TextView android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enter the pattern"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:id="@+id/setpin_indicator_text"
+                android:layout_margin="10dp"/>
+
+        </LinearLayout>
+
+
+
+        <!--      close  buttons-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spin_exit_button_ly"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:gravity="center">
+
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/RoundTransparentButton"
+                android:layout_margin="10dp"
+                android:text="Exit"
+                android:id="@+id/exit_button" />
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

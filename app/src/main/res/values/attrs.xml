@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Lock9View">
+        <attr name="lock9_dot_color" format="color"/>
+        <attr name="lock9_dot_fill_color" format="color"/>
+        <attr name="lock9_line_width" format="dimension"/>
+        <attr name="lock9_line_color" format="color"/>
+        <attr name="lock9_dot_count" format="integer"/>
+        <attr name="lock9_dot_radius" format="dimension"/>
+        <attr name="lock9_path_end_x" format="dimension"/>
+        <attr name="lock9_path_end_y" format="dimension"/>
+        <attr name="lock9_path_width" format="dimension"/>
+        <attr name="lock9_error_color" format="color"/>
+        <attr name="lock9_error_line_width" format="dimension"/>
+        <attr name="lock9_enable_vibration" format="boolean"/>
+        <attr name="lock9_enable_sound" format="boolean"/>
+        <attr name="lock9_dot_size" format="dimension"/>
+        <attr name="lock9_dot_normal_state_color" format="color"/>
+        <attr name="lock9_dot_selected_state_color" format="color"/>
+        <attr name="lock9_error_duration" format="integer"/>
+        <attr name="attribute_lock9_success_delay" format="integer"/>
+        <attr name="lock9_success_delay" format="integer"/>
+        <attr name="enableLineDrawing" format="boolean"/>
+    </declare-styleable>
+</resources>

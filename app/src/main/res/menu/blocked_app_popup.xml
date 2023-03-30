@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/blo_release"
+        android:title="Release App"
+        android:icon="@drawable/warning_sign"/>
+    <item
+        android:id="@+id/blo_check_usage"
+        android:title="Check Usage"
+        android:icon="@drawable/warning_sign"/>
+    <item
+        android:id="@+id/blo_launch"
+        android:title="Launch"
+        android:icon="@drawable/warning_sign"/>
+</menu>

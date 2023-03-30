@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Granting Usage Access"
+        android:textSize="24sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="    1. After tapping the 'Grant' button in the Reclaim Control app, you will be redirected to the 'Usage Access' settings page.
+    2. Look for the 'Reclaim Control' app in the list of apps and tap on it.
+    3. Turn on the toggle switch next to 'Allow usage tracking' to give the app access to your device's usage data.
+    4. You may see a warning message that explains how the app will use this data. Read it carefully and tap 'Allow' to confirm your decision.
+    5. You have now granted usage access to the Reclaim Control app. You can always turn off this access in the same settings page if you change your mind later."/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Grant"
+        android:id="@+id/grant_usage_btn"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Close"
+        android:id="@+id/close_usage_btn"/>
+
+</LinearLayout>

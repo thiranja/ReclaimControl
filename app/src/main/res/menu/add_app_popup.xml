@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/add_warn"
+        android:title="Warn me"
+        android:icon="@drawable/warning_sign"/>
+    <item
+        android:id="@+id/add_block"
+        android:title="Block App"
+        android:icon="@drawable/warning_sign"/>
+    <item
+        android:id="@+id/add_lock"
+        android:title="Lock App"
+        android:icon="@drawable/warning_sign"/>
+    <item
+        android:id="@+id/add_usage"
+        android:title="Check Usage"
+        android:icon="@drawable/warning_sign"/>
+    <item
+        android:id="@+id/add_launch"
+        android:title="Launch"
+        android:icon="@drawable/warning_sign"/>
+</menu>
