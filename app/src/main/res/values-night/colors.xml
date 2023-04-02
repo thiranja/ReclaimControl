@@ -18,5 +18,7 @@
 
     <color name="lite_gray_background">#444444</color>
 
+    <color name="nau_drawer_background">#111</color>
+
 
 </resources>

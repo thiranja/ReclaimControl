@@ -14,8 +14,15 @@
         <entry key="app/src/main/res/drawable/round_transpatent_button_background.xml" value="0.291" />
         <entry key="app/src/main/res/drawable/search_edit_text.xml" value="0.2025" />
         <entry key="app/src/main/res/drawable/warning_sign.xml" value="0.2025" />
+        <entry key="app/src/main/res/layout/action_bar_layout.xml" value="0.19479166666666667" />
+        <entry key="app/src/main/res/layout/activity_exit_warning.xml" value="0.19270833333333334" />
+        <entry key="app/src/main/res/layout/activity_info.xml" value="0.17916666666666667" />
+        <entry key="app/src/main/res/layout/activity_lock.xml" value="0.19270833333333334" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.19479166666666667" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.19479166666666667" />
         <entry key="app/src/main/res/layout/activity_warning.xml" value="0.2418478260869565" />
         <entry key="app/src/main/res/layout/grid_item.xml" value="0.3451086956521739" />
+        <entry key="app/src/main/res/layout/nav_header.xml" value="0.19479166666666667" />
         <entry key="app/src/main/res/layout/pattern_lock.xml" value="0.3451086956521739" />
         <entry key="app/src/main/res/layout/popup_usage_access.xml" value="0.19479166666666667" />
         <entry key="app/src/main/res/layout/set_up_pin.xml" value="0.19375" />

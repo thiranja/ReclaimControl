@@ -1,16 +1,20 @@
 package com.appeditmobile.reclaimcontrol;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.AppOpsManager;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -111,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
 //                intent.putExtra("unique_id", System.currentTimeMillis());
 //                sendBroadcast(intent);
 //                getDisplayOverOtherAppPermission();
+                new SetPinPopupWindow(MainActivity.this).showWindow();
 
             }
         });
@@ -305,6 +310,95 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 popupMenu.show();
+            }
+        });
+
+//        add navigation drawer with drawer layout
+        // Set the drawer toggle as the DrawerListener
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
+                R.string.open_drawer, R.string.close_drawer);
+        drawerLayout.addDrawerListener(drawerToggle);
+
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        drawerToggle.syncState();
+
+        ListView navList = findViewById(R.id.left_drawer);
+        //adding the header
+        View navHeader = getLayoutInflater().inflate(R.layout.nav_header, navList, false);
+        navList.addHeaderView(navHeader, null, false);
+        // adding items to the navigation drawer
+        // Add about and settings options to the navigation drawer
+        String[] navOptions = {"Help", "Settings", "Share App", "Rate App", "About", "Exit"};
+        int[] navIcons = {R.drawable.ic_outline_help_outline_32,
+                R.drawable.ic_outline_settings_32,
+                R.drawable.ic_outline_share_32,
+                R.drawable.ic_outline_star_rate_32,
+                R.drawable.ic_outline_about_32,
+                R.drawable.ic_outline_exit_to_app_32};
+
+        // Set the adapter for the list view
+        DrawerListAdapter adapter = new DrawerListAdapter(this, navOptions, navIcons);
+        navList.setAdapter(adapter);
+
+        ImageView toolBarOptionsIv = findViewById(R.id.action_bar_image);
+        toolBarOptionsIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
+        navList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // need to -1 since header is at position 0
+                String option = navOptions[position -1 ];
+                switch (option) {
+                    case "Help":
+                        // Handle about option click
+                        Intent intentHelp = new Intent(MainActivity.this, InfoActivity.class);
+                        intentHelp.putExtra("info_type","help");
+                        startActivity(intentHelp);
+                        break;
+                    case "Settings":
+                        // Handle settings option click
+                        Intent intentSettings = new Intent(MainActivity.this, SettingsActivity.class);
+                        startActivity(intentSettings);
+                        break;
+                    case "Share App":
+                        // Handle settings option click
+                        // Share the app
+                        String appPackage = getPackageName();
+                        String shareText = "Check out this app: https://play.google.com/store/apps/details?id=" + appPackage;
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                        shareIntent.setType("text/plain");
+                        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Share App");
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+                        startActivity(Intent.createChooser(shareIntent, "Share App"));
+                        break;
+                    case "Rate App":
+                        // Handle settings option click
+                        // Open the app's listing on the Google Play Store
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+                        } catch (ActivityNotFoundException e) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+                        }
+                        break;
+                    case "About":
+                        // Handle about option click
+                        Intent intentAbout = new Intent(MainActivity.this, InfoActivity.class);
+                        intentAbout.putExtra("info_type","about");
+                        startActivity(intentAbout);
+                        break;
+                    case "Exit":
+                        // Handle settings option click
+//                        Toast.makeText(MainActivity.this, "Exit clicked", Toast.LENGTH_SHORT).show();
+                        finishAffinity();
+                        break;
+
+                }
             }
         });
     }

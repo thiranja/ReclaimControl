@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Reclaim Control</string>
+    <string name="title_activity_lock">LockActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_exit_warning">ExitWarningActivity</string>
+
+    <!--    rating strings-->
+    <string name="rating_title">How was your experience with us?</string>
+    <string name="rating_positive">Maybe Later</string>
+    <string name="rating_negative">Never</string>
+
+    <!--    drawer-->
+    <string name="open_drawer">Open navigation drawer</string>
+    <string name="close_drawer">Close navigation drawer</string>
+
 </resources>

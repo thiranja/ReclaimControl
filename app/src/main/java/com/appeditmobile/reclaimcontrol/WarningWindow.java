@@ -3,10 +3,13 @@ package com.appeditmobile.reclaimcontrol;
 import static android.content.Context.WINDOW_SERVICE;
 
 import android.annotation.SuppressLint;
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,7 @@ import android.widget.TextView;
 
 import com.appeditmobile.reclaimcontrol.database.BlockedApp;
 import com.appeditmobile.reclaimcontrol.database.BlockedAppDatabaseHelper;
+import com.appeditmobile.reclaimcontrol.database.SharedPrefManager;
 import com.takwolf.android.lock9.Lock9View;
 
 import java.sql.Date;
@@ -35,6 +39,7 @@ public class WarningWindow {
     private BlockedAppDatabaseHelper dbHelper;
     private BlockedApp ba;
     private java.sql.Date sqlDate;
+    private String correctPattern;
     boolean dateUpdateNeeded;
 
     WarningWindow(Context context, String packagename){
@@ -97,6 +102,19 @@ public class WarningWindow {
             @Override
             public void onClick(View view) {
                 navigateToHome();
+                // informing the service that app is not launched
+                Intent appLaunchMonitor = new Intent(mContext, AppLaunchService.class);
+                appLaunchMonitor.putExtra("is_app_open",false);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    mContext.startForegroundService(appLaunchMonitor);
+                }else{
+                    mContext.startService(appLaunchMonitor);
+                }
+                // start exit warning activity as then app will no longer launch without purpose
+                // it will enter the package name of our app so it will prevent recurent launch of block
+                Intent exitWarningActivity = new Intent(mContext, ExitWarningActivity.class);
+                exitWarningActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                mContext.startActivity(exitWarningActivity);
                 updateDatabase(false);
                 wm.removeView(myView);
 
@@ -143,6 +161,7 @@ public class WarningWindow {
                 ba.setLaunchCount(0);
             }
         }
+        ba.incrementAttemptCount();
         dbHelper.updateBlockedApp(ba);
     }
 
@@ -183,6 +202,15 @@ public class WarningWindow {
             @Override
             public void onClick(View view) {
                 //launchApp();
+                // informing the service that app is launched
+                Intent appLaunchMonitor = new Intent(mContext, AppLaunchService.class);
+                appLaunchMonitor.putExtra("is_app_open",true);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    mContext.startForegroundService(appLaunchMonitor);
+                }else{
+                    mContext.startService(appLaunchMonitor);
+                }
+
                 updateDatabase(true);
                 wm.removeView(myView);
             }
@@ -219,34 +247,47 @@ public class WarningWindow {
         Button open = myView.findViewById(R.id.proceed_button);
         open.setVisibility(View.GONE);
 
-        String correctPin = "147862";
+        SharedPreferences sp = mContext.getSharedPreferences(SharedPrefManager.FILE_NAME, Context.MODE_PRIVATE);
 
-        Lock9View patternLock = myView.findViewById(R.id.lock9_view);
-        patternLock.setWillNotDraw(true);
-        patternLock.setGestureCallback(new Lock9View.GestureCallback() {
-            @Override
-            public void onNodeConnected(@androidx.annotation.NonNull int[] numbers) {
+        correctPattern = sp.getString(SharedPrefManager.LOCK_PASSWORD_STRING, "1234");
 
-            }
+//        Lock9View patternLock = myView.findViewById(R.id.lock9_view);
+//        patternLock.setWillNotDraw(true);
+//        patternLock.setGestureCallback(new Lock9View.GestureCallback() {
+//            @Override
+//            public void onNodeConnected(@androidx.annotation.NonNull int[] numbers) {
+//
+//            }
+//
+//            @Override
+//            public void onGestureFinished(@androidx.annotation.NonNull int[] numbers) {
+//                StringBuilder sb = new StringBuilder();
+//                for (int number : numbers){
+//                    sb.append(number);
+//                }
+//
+//                Log.d("PATTERNLOCK","node connected password is " + sb.toString());
+//                if (correctPattern.equals(sb.toString())){
+//                    Log.d("PATTERNLOCK","pin correct opening app");
+//                    //launchApp();
+//                    updateDatabase(true);
+//                    wm.removeView(myView);
+//                }else{
+//                    Log.d("PATTERNLOCK","pin incorrect");
+//                }
+//            }
+//        });
 
-            @Override
-            public void onGestureFinished(@androidx.annotation.NonNull int[] numbers) {
-                StringBuilder sb = new StringBuilder();
-                for (int number : numbers){
-                    sb.append(number);
-                }
 
-                Log.d("PATTERNLOCK","node connected password is " + sb.toString());
-                if (correctPin.equals(sb.toString())){
-                    Log.d("PATTERNLOCK","pin correct opening app");
-                    //launchApp();
-                    updateDatabase(true);
-                    wm.removeView(myView);
-                }else{
-                    Log.d("PATTERNLOCK","pin incorrect");
-                }
-            }
-        });
+
+//        KeyguardManager keyguardManager = (KeyguardManager) mContext.getSystemService(Context.KEYGUARD_SERVICE);
+//        Intent intent = keyguardManager.createConfirmDeviceCredentialIntent(null, null);
+//        if (intent != null) {
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            mContext.startActivity(intent);
+//        }
+//
+//        wm.removeView(myView);
 
     }
 }

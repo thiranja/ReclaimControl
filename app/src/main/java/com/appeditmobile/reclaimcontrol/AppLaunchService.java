@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -34,6 +35,7 @@ public class AppLaunchService extends Service {
     private boolean mIsMonitoring;
     private BlockedApp[] apps;
     private String finallyOpenedPackageName;
+    private boolean isAppOpened = false;
 
     public AppLaunchService() {
     }
@@ -65,6 +67,11 @@ public class AppLaunchService extends Service {
                 .build();
         startForeground(1, notification);
 
+        Bundle extras = intent.getExtras();
+        if (extras != null){
+            isAppOpened = extras.getBoolean("is_app_open");
+        }
+
         if (!mIsMonitoring) {
             mIsMonitoring = true;
             mHandler.post(mMonitoringRunnable);
@@ -93,16 +100,32 @@ public class AppLaunchService extends Service {
                 }
                 if (latestUsageStats != null) {
                     String packageName = latestUsageStats.getPackageName();
-                    if (!(packageName.equals(finallyOpenedPackageName)) ) {
-                        Log.d("AppLaunch",packageName);
+                    Log.d("AppLaunch", packageName);
+                    if (isAppOpened) {
+                        if (!(packageName.equals(finallyOpenedPackageName))) {
+                            Log.d("AppLaunch", packageName);
+                            finallyOpenedPackageName = packageName;
+                            for (BlockedApp ba : apps) {
+                                if (packageName.equals(ba.getPackageName())) {
+                                    // Launch app lock screen
+                                    startWarningActivity(packageName, ba.getBlockType());
+
+                                }
+                            }
+                        }
+                    }else {
+//                        need to set this true otherwise window will open again and again
+                        isAppOpened = true;
+                        Log.d("AppLaunch", packageName);
                         finallyOpenedPackageName = packageName;
                         for (BlockedApp ba : apps) {
                             if (packageName.equals(ba.getPackageName())) {
                                 // Launch app lock screen
-                                startWarningActivity(packageName);
+                                startWarningActivity(packageName, ba.getBlockType());
 
                             }
                         }
+
                     }
                 }
             }
@@ -110,7 +133,7 @@ public class AppLaunchService extends Service {
         }
     };
 
-    private void startWarningActivity(String packageName){
+    private void startWarningActivity(String packageName, int blockType){
         mMainThreadHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -123,12 +146,20 @@ public class AppLaunchService extends Service {
 //                    e.printStackTrace();
 //                }
 //                startActivity(lockIntent);
-                WarningWindow window = null;
-                window = new WarningWindow(getApplicationContext(),packageName);
-                window.showWindow();
+                if (blockType == BlockedApp.BLOCK_TYPE_LOCK){
+                    Intent lockActivity = new Intent(getApplicationContext(), LockActivity.class);
+                    lockActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                    startActivity(lockActivity);
+                }else {
+                    WarningWindow window = null;
+                    window = new WarningWindow(getApplicationContext(), packageName);
+                    window.showWindow();
+                }
             }
         });
     }
+
+
 
     @Override
     public IBinder onBind(Intent intent) {

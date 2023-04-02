@@ -109,6 +109,15 @@
                 android:id="@+id/setpin_indicator_text"
                 android:layout_margin="10dp"/>
 
+            <TextView android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="Wrong! Try again!"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:id="@+id/setpin_indicator_wrong"
+                android:layout_margin="10dp"/>
+
         </LinearLayout>
 
 
